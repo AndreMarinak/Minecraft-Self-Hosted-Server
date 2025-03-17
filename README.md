@@ -192,6 +192,11 @@ Then do:
 ```
 🚨NOTE: You may have to do the start command twice to allow world generation. This command is the same as(docker-compose up -d)
 
+For console:
+```
+./console
+```
+
 Run any commands from this list starting with "./"
 Most useful ones will be ./start and ./stop to start and stop the server
 
@@ -292,5 +297,5 @@ By following these precautions, your Minecraft server will stay secure and relia
 ---
 ---
 🎮 Enjoy Your Remote Minecraft Server!  
-With Docker, tmux, Tailscale, and Playit.gg, your Minecraft server will run smoothly and be accessible remotely! 🚀
+With Docker, Tmux, Tailscale, and Playit.gg, your Minecraft server will run smoothly and be accessible remotely! 🚀
 
