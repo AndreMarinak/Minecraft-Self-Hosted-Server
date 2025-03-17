@@ -100,12 +100,12 @@ To configure/create your Minecraft server, you need to edit two key files:
    ```
    nano ~/minecraft-servers/server1/docker-compose.yml
    ```
-   You must change the correct docker container name, version, and change the number before the : on the Port line
+   🚨You must change the correct docker container name, version, and change the number before the : on the Port line🚨
 2. **Open the Minecraft Server script:**  
    ```
    nano ~/minecraft-servers/server1/mc-server.sh
    ```  
-   This has 3 "server1" that you much change the server# that fits 
+   🚨This has 3 "server1" that you much change the server# that fits🚨
 ### 🔹 **Copy & Paste Instructions**  
 - Open each file using the `nano` command.  
 - Visit the **GitHub repository** to find the correct file contents.  
@@ -202,8 +202,8 @@ Use a **cron job** to automatically back up your Minecraft server data every **S
    ```
    0 3 * * 0 /bin/bash -c 'BACKUP_DIR="$HOME/minecraft-servers/backups/server1/weeklybu"; mkdir -p "$BACKUP_DIR"; SIZE=$(du -sh "$HOME/minecraft-servers/server1/data" | cut -f1); TIMESTAMP="$(date +\%F-\%H%M)"; BACKUP_FILE="$BACKUP_DIR/backup-$TIMESTAMP-${SIZE}.tar.gz"; tar -czf "$BACKUP_FILE" -C "$HOME/minecraft-servers/server2" data'
    ```
-3. Replace "server1" with the proper name (server2, server3...) 
-3. Save and exit the crontab editor.  
+3.🚨 Replace "server1" with the proper name (server2, server3...) 🚨
+4. Save and exit the crontab editor.  
 
 ### 🔹 **How It Works**  
 - **Runs at 3 AM every Sunday** (`0 3 * * 0`)  
@@ -219,7 +219,7 @@ crontab -l
 ```
 
 ### 🔹 **Manually Running the Backup Script**  
-If needed, you can run the backup manually (for server1, change if needed):  
+If needed, you can run the backup manually (🚨for server1, change if needed🚨):  
 ```
 /bin/bash -c 'BACKUP_DIR="$HOME/minecraft-servers/backups/server1/weeklybu"; mkdir -p "$BACKUP_DIR"; SIZE=$(du -sh "$HOME/minecraft-servers/server1/data" | cut -f1); TIMESTAMP="$(date +\%F-\%H%M)"; BACKUP_FILE="$BACKUP_DIR/backup-$TIMESTAMP-${SIZE}.tar.gz"; tar -czf "$BACKUP_FILE" -C "$HOME/minecraft-servers/server2" data'
 ```
@@ -233,7 +233,7 @@ To restore a previous backup:
 ```
 tar -xzf $HOME/minecraft-servers/backups/server1/backup-YYYY-MM-DD-HHMM-SIZE.tar.gz -C $HOME/minecraft-servers/server1/
 ```
-*REPLACE "SERVER1" with the correct number you want to backup (IN both places)
+*🚨REPLACE "SERVER1" with the correct number you want to backup (IN both places)🚨
 
 # 🚫 Stopping SSH (If Needed)  
 Run these commands to disable SSH for security purposes:  
