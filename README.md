@@ -1,4 +1,4 @@
-## **This guide will help you set up a Minecraft server on an old PC running Ubuntu while managing it remotely via SSH, Docker, and Playit.gg.**
+## **This guide will help you set up a Minecraft server on an old PC running Ubuntu while managing it remotely via SSH, Docker, Tailscale, and Playit.gg.**
 
 # 🔹 1️⃣ Install Ubuntu on OLDPC  
 Download and install Ubuntu Desktop (not server)  
