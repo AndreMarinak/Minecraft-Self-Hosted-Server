@@ -167,6 +167,44 @@ Run any commands from this list starting with "./"
 Most useful ones will be ./start and ./stop to start and stop the server
 
 
+# 🔹 7️⃣ Automating Backups with Cron Jobs  
+Use a **cron job** to automatically back up your Minecraft server data every **Sunday at 3 AM**.
+
+### 🔹 **Setting Up the Cron Job**  
+1. Open the crontab editor:  
+   ```
+   crontab -e
+   ```  
+2. Add the following line at the bottom:  
+   ```
+   0 3 * * 0 /bin/bash -c 'BACKUP_DIR="$HOME/minecraft-servers/backups/server1/weeklybu"; mkdir -p "$BACKUP_DIR"; SIZE=$(du -sh "$HOME/minecraft-servers/server1/data" | cut -f1); TIMESTAMP="$(date +\%F-\%H%M)"; BACKUP_FILE="$BACKUP_DIR/backup-$TIMESTAMP-${SIZE}.tar.gz"; tar -czf "$BACKUP_FILE" -C "$HOME/minecraft-servers/server2" data'
+   ```
+3. Replace "server1" with the proper name (server2, server3...) 
+3. Save and exit the crontab editor.  
+
+### 🔹 **How It Works**  
+- **Runs at 3 AM every Sunday** (`0 3 * * 0`)  
+- **Creates a backup directory** (`weeklybu`) if it doesn’t exist.  
+- **Calculates the size of the server data folder**.  
+- **Generates a timestamped backup file**.  
+- **Compresses the data folder into a `.tar.gz` backup file**.  
+
+### 🔹 **Verifying the Cron Job**  
+Check if your cron job is active:  
+```
+crontab -l
+```
+
+### 🔹 **Manually Running the Backup Script**  
+If needed, you can run the backup manually (for server1, change if needed):  
+```
+/bin/bash -c 'BACKUP_DIR="$HOME/minecraft-servers/backups/server1/weeklybu"; mkdir -p "$BACKUP_DIR"; SIZE=$(du -sh "$HOME/minecraft-servers/server1/data" | cut -f1); TIMESTAMP="$(date +\%F-\%H%M)"; BACKUP_FILE="$BACKUP_DIR/backup-$TIMESTAMP-${SIZE}.tar.gz"; tar -czf "$BACKUP_FILE" -C "$HOME/minecraft-servers/server2" data'
+```
+
+Now your Minecraft server data will be **automatically backed up every Sunday at 3 AM**! 🚀
+
+
+
 # 🔹 8️⃣ Restoring a Backup  
 To restore a previous backup:  
 ```
