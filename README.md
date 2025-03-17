@@ -1,4 +1,4 @@
-**This guide will help you set up a Minecraft server on an old PC running Ubuntu while managing it remotely via SSH, Docker, and Playit.gg.**
+##**This guide will help you set up a Minecraft server on an old PC running Ubuntu while managing it remotely via SSH, Docker, and Playit.gg.**
 ---
 🚫 Stopping SSH (If Needed)
 Run these commands to disable SSH for security purposes:
@@ -6,11 +6,11 @@ Run these commands to disable SSH for security purposes:
 sudo systemctl disable ssh
 sudo systemctl stop ssh
 
-🔹 1️⃣ Install Ubuntu on OLDPC
+#🔹 1️⃣ Install Ubuntu on OLDPC
 Download and install Ubuntu Desktop (not server)
 Download Ubuntu: https://ubuntu.com/download/desktop
 Installation Guide: https://www.youtube.com/watch?v=lOy9LFNHHH4
-🔹 2️⃣ Setup OLDPC (Linux)
+#🔹 2️⃣ Setup OLDPC (Linux)
 Run the following commands on OLDPC after installing Ubuntu.
 
 🔸 Update System
@@ -38,7 +38,7 @@ docker ps
 
 If the command runs successfully, Docker is configured correctly.
 
-🔹 3️⃣ Setup Remote Access from HOST (Windows)
+#🔹 3️⃣ Setup Remote Access from HOST (Windows)
 On your Windows machine (HOST), follow these steps.
 
 🔸 Connect to OLDPC via SSH
@@ -46,7 +46,7 @@ Open PowerShell or Command Prompt.
 Run: ssh <username>@<ip_of_oldpc>
 Accept the connection by typing yes and pressing Enter.
 Enter the password of OLDPC when prompted.
-🔹 4️⃣ Prepare Minecraft Server on OLDPC
+#🔹 4️⃣ Prepare Minecraft Server on OLDPC
 🔸 Update Firmware (Optional)
 sudo fwupdmgr get-upgrades
 sudo fwupdmgr update
@@ -64,7 +64,7 @@ nano ~/minecraft-servers/server1/mc-server.sh
 chmod +x ~/minecraft-servers/server1/mc-server.sh
 chmod +x docker-compose
 
-🔹 5️⃣ Setup & Run Playit.gg in tmux
+#🔹 5️⃣ Setup & Run Playit.gg in tmux
 🔸 Install tmux
 sudo apt update && sudo apt install tmux -y
 
@@ -86,7 +86,7 @@ tmux attach -t playit
 🔸 Kill tmux Session (Stop Playit)
 tmux kill-session -t playit
 
-🔹 6️⃣ Running the Minecraft Server
+#🔹 6️⃣ Running the Minecraft Server
 Navigate to the Minecraft server directory:
 cd ~/minecraft-servers/server1
 
@@ -96,7 +96,7 @@ Start the Minecraft server:
 View available commands:
 ./commands
 
-🔹 7️⃣ Restoring a Backup
+#🔹 7️⃣ Restoring a Backup
 To restore a previous backup:
 tar -xzf $HOME/minecraft-servers/backups/server1/backup-YYYY-MM-DD-HHMM-SIZE.tar.gz -C $HOME/minecraft-servers/server1/
 
