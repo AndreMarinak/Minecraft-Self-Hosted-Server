@@ -186,6 +186,12 @@ View available commands:
 ./commands
 ```
 
+Then do:
+```
+./start
+```
+🚨NOTE: You may have to do the start command twice to allow world generation. This command is the same as(docker-compose up -d)
+
 Run any commands from this list starting with "./"
 Most useful ones will be ./start and ./stop to start and stop the server
 
