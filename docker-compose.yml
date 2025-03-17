@@ -1,0 +1,18 @@
+//IN FILE
+version: "3.8"
+ 
+services:
+  mc-server1:
+    image: itzg/minecraft-server
+    container_name: minecraft_server1 #🚨CHANGE ME🚨
+    tty: true
+    stdin_open: true
+    ports:
+      - "25570:25565"  #🚨 Main Minecraft port, change 25570 to a number you want (cant be same as other servers you have)🚨
+    environment:
+      EULA: "TRUE"
+      VERSION: "1.21.4" #🚨Change ME🚨
+      MEMORY: "14G"  
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
