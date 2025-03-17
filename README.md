@@ -1,13 +1,5 @@
 ## **This guide will help you set up a Minecraft server on an old PC running Ubuntu while managing it remotely via SSH, Docker, and Playit.gg.**
 
-🚫 Stopping SSH (If Needed)  
-Run these commands to disable SSH for security purposes:
-
-```
-sudo systemctl disable ssh  
-sudo systemctl stop ssh
-```
-
 # 🔹 1️⃣ Install Ubuntu on OLDPC  
 Download and install Ubuntu Desktop (not server)  
 Download Ubuntu: https://ubuntu.com/download/desktop  
@@ -50,8 +42,33 @@ docker ps
 ```
 If the command runs successfully, Docker is configured correctly.  
 
-# 🔹 3️⃣ Setup Remote Access from HOST (Windows)  
-On your Windows machine (HOST), follow these steps.  
+# 🔹 3️⃣ Setup Remote Access with Tailscale
+Tailscale allows you to access your OLDPC remotely, even when it's on a different WiFi network.
+
+🔸 Install Tailscale on OLDPC  
+```
+curl -fsSL https://tailscale.com/install.sh | sh  
+sudo tailscale up
+```
+After running `tailscale up`, follow the authentication link and log in.
+
+🔸 Install Tailscale on HOST (Windows)  
+Download and install Tailscale from: https://tailscale.com/download  
+
+🔸 Connect HOST and OLDPC  
+Once installed, sign in and ensure both devices appear on the Tailscale dashboard.
+Find the Tailscale IP of OLDPC by running:
+```
+tailscale ip -4
+```
+On Windows (HOST), SSH into OLDPC using:
+```
+ssh <username>@<tailscale_ip_of_oldpc>
+```
+Now, you can remotely manage OLDPC even when on different networks!
+
+# 🔹 4️⃣ Setup Remote Access from HOST (Windows)  
+If you prefer SSH over Tailscale, follow these steps.  
 
 🔸 Connect to OLDPC via SSH  
 Open PowerShell or Command Prompt.  
@@ -62,7 +79,7 @@ ssh <username>@<ip_of_oldpc>
 Accept the connection by typing `yes` and pressing Enter.  
 Enter the password of OLDPC when prompted.  
 
-# 🔹 4️⃣ Prepare Minecraft Server on OLDPC  
+# 🔹 5️⃣ Prepare Minecraft Server on OLDPC  
 🔸 Update Firmware (Optional)  
 ```
 sudo fwupdmgr get-upgrades  
@@ -86,7 +103,7 @@ chmod +x ~/minecraft-servers/server1/mc-server.sh
 chmod +x docker-compose
 ```
 
-# 🔹 5️⃣ Setup & Run Playit.gg in tmux  
+# 🔹 6️⃣ Setup & Run Playit.gg in tmux  
 🔸 Install tmux  
 ```
 sudo apt update && sudo apt install tmux -y
@@ -117,7 +134,7 @@ tmux attach -t playit
 tmux kill-session -t playit
 ```
 
-# 🔹 6️⃣ Running the Minecraft Server  
+# 🔹 7️⃣ Running the Minecraft Server  
 Navigate to the Minecraft server directory:  
 ```
 cd ~/minecraft-servers/server1
@@ -133,19 +150,19 @@ View available commands:
 ./commands
 ```
 
-# 🔹 7️⃣ Restoring a Backup  
+# 🔹 8️⃣ Restoring a Backup  
 To restore a previous backup:  
 ```
 tar -xzf $HOME/minecraft-servers/backups/server1/backup-YYYY-MM-DD-HHMM-SIZE.tar.gz -C $HOME/minecraft-servers/server1/
 ```
 
-❌ Stopping SSH Access (If Needed)  
-To disable SSH access for security reasons:  
+# 🚫 Stopping SSH (If Needed)  
+Run these commands to disable SSH for security purposes:  
 ```
 sudo systemctl disable ssh  
 sudo systemctl stop ssh
 ```
 
 🎮 Enjoy Your Remote Minecraft Server!  
-With Docker, tmux, and Playit.gg, your Minecraft server will run smoothly and be accessible remotely! 🚀
+With Docker, tmux, Tailscale, and Playit.gg, your Minecraft server will run smoothly and be accessible remotely! 🚀
 
