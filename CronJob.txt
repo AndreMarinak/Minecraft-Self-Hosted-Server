@@ -1,0 +1,3 @@
+Cron Job:
+
+0 3 * * 0 /bin/bash -c 'BACKUP_DIR="$HOME/minecraft-servers/backups/server1/weeklybu"; mkdir -p "$BACKUP_DIR"; SIZE=$(du -sh "$HOME/minecraft-servers/server1/data" | cut -f1); TIMESTAMP="$(date +\%F-\%H%M)"; BACKUP_FILE="$BACKUP_DIR/backup-$TIMESTAMP-${SIZE}.tar.gz"; tar -czf "$BACKUP_FILE" -C "$HOME/minecraft-servers/server2" data'
