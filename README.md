@@ -118,7 +118,7 @@ tmux new -s playit
 ```
 playit
 ```
-Open the Playit.gg link in the terminal and log in or create an account.  
+Open the Playit.gg link in the terminal and log in or create an account. (This will give you a MC server address anyone can join)
 
 🔸 Detach from tmux (Keep Playit Running)  
 Press `Ctrl + B`, then `D`  
@@ -150,11 +150,16 @@ View available commands:
 ./commands
 ```
 
+Run any commands from this list starting with "./"
+Most useful ones will be ./start and ./stop to start and stop the server
+
+
 # 🔹 8️⃣ Restoring a Backup  
 To restore a previous backup:  
 ```
 tar -xzf $HOME/minecraft-servers/backups/server1/backup-YYYY-MM-DD-HHMM-SIZE.tar.gz -C $HOME/minecraft-servers/server1/
 ```
+*REPLACE "SERVER1" with the correct number you want to backup (IN both places)
 
 # 🚫 Stopping SSH (If Needed)  
 Run these commands to disable SSH for security purposes:  
