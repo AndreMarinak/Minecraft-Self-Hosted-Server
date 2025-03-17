@@ -1,51 +1,14 @@
 ## **This guide will help you set up a Minecraft server on an old PC running Ubuntu while managing it remotely via SSH, Docker, Tailscale, and Playit.gg.**
 
-
-## **This guide will help you set up a Minecraft server on an old PC running Ubuntu while managing it remotely via SSH, Docker, and Playit.gg.**
-
 # ⚠️ Precautions & Security Best Practices  
 Follow these best practices to keep your server secure:  
 
 🔹 **Use Strong Passwords** – Avoid weak passwords for SSH and remote access. Use a password manager.  
 🔹 **Keep Your IP Private** – Never share your public/private IP online.  
 🔹 **Connect to Trusted Networks** – Avoid public WiFi. Use a VPN if necessary.  
-🔹 **Enable Firewall & Restrict SSH** – Use `ufw` to block unwanted access:  
-  ```
-  sudo ufw allow OpenSSH
-  sudo ufw enable
-  ```
-  Disable SSH when not in use:  
-  ```
-  sudo systemctl stop ssh
-  sudo systemctl disable ssh
-  ```  
-🔹 **Keep Software Updated** – Regularly update your system and dependencies:  
-  ```
-  sudo apt update && sudo apt upgrade -y
-  ```  
-🔹 **Use tmux for Remote Sessions** – Prevent losing progress when disconnected:  
-  ```
-  tmux new -s minecraft
-  ```  
-🔹 **Limit User Permissions** – Avoid running the server as root. Create a dedicated user:  
-  ```
-  sudo adduser mcserver
-  sudo usermod -aG docker mcserver
-  ```  
-🔹 **Monitor Server Activity** – Check active users and processes:  
-  ```
-  who
-  w
-  top
-  ```  
-🔹 **Backup Regularly** – Store backups separately and automate with cron jobs.  
-
-By following these precautions, your Minecraft server will stay secure and reliable! 🚀
 
 ---
----
----
----
+
 
 
 
@@ -218,6 +181,49 @@ sudo systemctl disable ssh
 sudo systemctl stop ssh
 ```
 
+# ⚠️ Precautions & Security Best Practices  
+Follow these best practices to keep your server secure:  
+
+🔹 **Use Strong Passwords** – Avoid weak passwords for SSH and remote access. Use a password manager.  
+🔹 **Keep Your IP Private** – Never share your public/private IP online.  
+🔹 **Connect to Trusted Networks** – Avoid public WiFi. Use a VPN if necessary.  
+🔹 **Enable Firewall & Restrict SSH** – Use `ufw` to block unwanted access:  
+  ```
+  sudo ufw allow OpenSSH
+  sudo ufw enable
+  ```
+  Disable SSH when not in use:  
+  ```
+  sudo systemctl stop ssh
+  sudo systemctl disable ssh
+  ```  
+🔹 **Keep Software Updated** – Regularly update your system and dependencies:  
+  ```
+  sudo apt update && sudo apt upgrade -y
+  ```  
+🔹 **Use tmux for Remote Sessions** – Prevent losing progress when disconnected:  
+  ```
+  tmux new -s minecraft
+  ```  
+🔹 **Limit User Permissions** – Avoid running the server as root. Create a dedicated user:  
+  ```
+  sudo adduser mcserver
+  sudo usermod -aG docker mcserver
+  ```  
+🔹 **Monitor Server Activity** – Check active users and processes:  
+  ```
+  who
+  w
+  top
+  ```  
+🔹 **Backup Regularly** – Store backups separately and automate with cron jobs.  
+
+By following these precautions, your Minecraft server will stay secure and reliable! 🚀
+
+---
+---
+---
+---
 🎮 Enjoy Your Remote Minecraft Server!  
 With Docker, tmux, Tailscale, and Playit.gg, your Minecraft server will run smoothly and be accessible remotely! 🚀
 
