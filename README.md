@@ -17,7 +17,7 @@ Follow these best practices to keep your server secure:
 Download and install Ubuntu Desktop (not server)  
 Download Ubuntu: https://ubuntu.com/download/desktop  
 Installation Guide: https://www.youtube.com/watch?v=lOy9LFNHHH4  
-
+Connect WIFI!!!
 # 🔹 2️⃣ Setup OLDPC (Linux)  
 Run the following commands on OLDPC after installing Ubuntu.  
 
