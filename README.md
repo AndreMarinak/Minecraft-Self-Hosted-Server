@@ -1,5 +1,5 @@
 ## **This guide will help you set up a Minecraft server on an old PC running Ubuntu while managing it remotely via SSH, Docker, and Playit.gg.**
----
+
 🚫 Stopping SSH (If Needed)
 Run these commands to disable SSH for security purposes:
 
