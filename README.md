@@ -92,7 +92,30 @@ ssh <username>@<ip_of_oldpc>
 Accept the connection by typing `yes` and pressing Enter.  
 Enter the password of OLDPC when prompted.  
 
-# 🔹 5️⃣ Prepare Minecraft Server on OLDPC  
+# 🔹 5️⃣ Creating/Editing Configuration Files  
+cd to the correct server (cd minecraft-servers/server1)
+To configure/create your Minecraft server, you need to edit two key files:  
+
+1. **Open the Docker Compose file:**  
+   ```
+   nano ~/minecraft-servers/server1/docker-compose.yml
+   ```
+   You must change the correct docker container name, version, and change the number before the : on the Port line
+2. **Open the Minecraft Server script:**  
+   ```
+   nano ~/minecraft-servers/server1/mc-server.sh
+   ```  
+   This has 3 "server1" that you much change the server# that fits 
+### 🔹 **Copy & Paste Instructions**  
+- Open each file using the `nano` command.  
+- Visit the **GitHub repository** to find the correct file contents.  
+- Copy the contents from GitHub and paste them into the terminal using **Ctrl + Shift + V**.  
+- Save the file in `nano` by pressing **Ctrl + X**, then **Y**, then **Enter**.  
+
+Now your Minecraft server is properly configured! 🚀
+
+
+# 🔹 6️⃣ Prepare Minecraft Server on OLDPC  
 🔸 Update Firmware (Optional)  
 ```
 sudo fwupdmgr get-upgrades  
@@ -116,7 +139,7 @@ chmod +x ~/minecraft-servers/server1/mc-server.sh
 chmod +x docker-compose
 ```
 
-# 🔹 6️⃣ Setup & Run Playit.gg in tmux  
+# 🔹 7️⃣ Setup & Run Playit.gg in tmux  
 🔸 Install tmux  
 ```
 sudo apt update && sudo apt install tmux -y
@@ -167,7 +190,7 @@ Run any commands from this list starting with "./"
 Most useful ones will be ./start and ./stop to start and stop the server
 
 
-# 🔹 7️⃣ Automating Backups with Cron Jobs  
+# 🔹 8️⃣ Automating Backups with Cron Jobs  
 Use a **cron job** to automatically back up your Minecraft server data every **Sunday at 3 AM**.
 
 ### 🔹 **Setting Up the Cron Job**  
@@ -205,7 +228,7 @@ Now your Minecraft server data will be **automatically backed up every Sunday at
 
 
 
-# 🔹 8️⃣ Restoring a Backup  
+# 🔹 9️⃣ Restoring a Backup  
 To restore a previous backup:  
 ```
 tar -xzf $HOME/minecraft-servers/backups/server1/backup-YYYY-MM-DD-HHMM-SIZE.tar.gz -C $HOME/minecraft-servers/server1/
