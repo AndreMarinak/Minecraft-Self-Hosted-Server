@@ -3,8 +3,8 @@
 🚫 Stopping SSH (If Needed)
 Run these commands to disable SSH for security purposes:
 
-'sudo systemctl disable ssh'
-code sudo systemctl stop ssh
+`sudo systemctl disable ssh`
+`sudo systemctl stop ssh`
 
 # 🔹 1️⃣ Install Ubuntu on OLDPC
 Download and install Ubuntu Desktop (not server)
