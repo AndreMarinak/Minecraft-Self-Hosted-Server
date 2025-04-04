@@ -198,7 +198,8 @@ case "$RUN_CMD" in
         docker exec -it "$CONTAINER_NAME" rcon-cli list 2>/dev/null
  
         echo "🔎 Server Version:"
-        docker exec -it "$CONTAINER_NAME" rcon-cli version 2>/dev/null
+        grep 'VERSION:' docker-compose.yml | cut -d'"' -f2
+
  
         echo "🔎 Resource Usage (docker stats --no-stream):"
         docker stats --no-stream "$CONTAINER_NAME"
@@ -216,7 +217,8 @@ case "$RUN_CMD" in
           docker exec -it "$CONTAINER_NAME" rcon-cli list 2>/dev/null
  
           echo "🔎 Server Version:"
-          docker exec -it "$CONTAINER_NAME" rcon-cli version 2>/dev/null
+          grep 'VERSION:' docker-compose.yml | cut -d'"' -f2
+
  
           echo "🔎 Resource Usage (docker stats --no-stream):"
           docker stats --no-stream "$CONTAINER_NAME"
