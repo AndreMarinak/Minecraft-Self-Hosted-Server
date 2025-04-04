@@ -1,5 +1,4 @@
 //IN FILE
-version: "3.8"
  
 services:
   mc-server1:
