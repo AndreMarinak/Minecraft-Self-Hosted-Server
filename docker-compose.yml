@@ -1,7 +1,7 @@
 //IN FILE
  
 services:
-  mc-server1:
+  mc-server1: #🚨CHANGE ME🚨
     image: itzg/minecraft-server
     container_name: minecraft_server1 #🚨CHANGE ME🚨
     tty: true
