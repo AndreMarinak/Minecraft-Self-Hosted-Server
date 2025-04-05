@@ -155,6 +155,7 @@ tmux new -s playit
 playit
 ```
 Open the Playit.gg link in the terminal and log in or create an account. (This will give you a MC server address anyone can join)
+Select TCP, then Minecraft Java***
 
 🔸 Detach from tmux (Keep Playit Running)  
 Press `Ctrl + B`, then `D`  
