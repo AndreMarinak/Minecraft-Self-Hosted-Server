@@ -11,7 +11,7 @@ services:
     environment:
       EULA: "TRUE"
       VERSION: "1.21.4" #🚨Change ME🚨
-      MEMORY: "14G"  
+      MEMORY: "14G"   #🚨Change ME🚨
     volumes:
       - ./data:/data
     restart: unless-stopped
