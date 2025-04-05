@@ -98,7 +98,7 @@ case "$RUN_CMD" in
 
     whitelist)
         echo "✅ Editing whitelist.json..."
-        nano "$SERVER_DIR/whitelist.json"
+        nano "$SERVER_DIR/data/whitelist.json"
         ;;
 
     ops)
