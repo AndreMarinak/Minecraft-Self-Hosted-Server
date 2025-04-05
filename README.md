@@ -239,13 +239,48 @@ If needed, you can run the backup manually (🚨for server1, change if needed�
 Now your Minecraft server data will be **automatically backed up every Sunday at 3 AM**! 🚀
 
 
+9️⃣ Mannual Backup and Restoring  
+### 🔹 Backup the Minecraft Server
 
-# 🔹 9️⃣ Restoring a Backup  
-To restore a previous backup:  
+To back up or restore your server data, use the following commands from within your `mc-server.sh` script:
+
+#### 🔸 Backup  
+Automatically create a timestamped backup with an incremented number:
 ```
-tar -xzf $HOME/minecraft-servers/backups/server1/backup-YYYY-MM-DD-HHMM-SIZE.tar.gz -C $HOME/minecraft-servers/server1/
+./ backup
 ```
-*🚨REPLACE "SERVER1" with the correct number you want to backup (IN both places)🚨
+This will:
+- Turn off saving temporarily
+- Create a `.tar.gz` archive of your server world with a number + timestamp
+- Re-enable saving
+- Example: `3-AutoBackup-backup-2025-04-05-0230-135M.tar.gz`
+
+#### 🔸 Named Backup  
+Prompt for a custom backup name:
+```
+./backupn
+```
+You’ll be asked to enter a name (no spaces).  
+Example: `4-MyWorld-backup-2025-04-05-0315-140M.tar.gz`
+
+#### 🔸 Restore a Backup  
+To restore a previous backup:
+```
+./restore
+```
+You will:
+- See a list of available backups
+- Enter the **number** of the backup
+- Type `YES` to confirm
+
+The script will:
+- Stop the server
+- Delete current world data
+- Extract the selected backup
+- Restart the server
+
+🚗 Done! Your world will be restored and live.
+
 
 # 🚫 Stopping SSH (If Needed)  
 Run these commands to disable SSH for security purposes:  
