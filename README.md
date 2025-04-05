@@ -239,7 +239,7 @@ If needed, you can run the backup manually (🚨for server1, change if needed�
 Now your Minecraft server data will be **automatically backed up every Sunday at 3 AM**! 🚀
 
 
-9️⃣ Mannual Backup and Restoring  
+# 🔹 9️⃣ Mannual Backup and Restoring  
 ### 🔹 Backup the Minecraft Server
 
 To back up or restore your server data, use the following commands from within your `mc-server.sh` script:
