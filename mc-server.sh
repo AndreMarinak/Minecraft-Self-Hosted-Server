@@ -103,7 +103,7 @@ case "$RUN_CMD" in
 
     ops)
         echo "🛠 Editing ops.json..."
-        nano "$SERVER_DIR/ops.json"
+        nano "$SERVER_DIR/data/ops.json"
         ;;
 
     stats)
