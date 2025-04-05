@@ -136,7 +136,7 @@ cd ~/minecraft-servers/server1
 nano ~/minecraft-servers/server1/docker-compose.yml  
 nano ~/minecraft-servers/server1/mc-server.sh  
 chmod +x ~/minecraft-servers/server1/mc-server.sh  
-chmod +x docker-compose
+chmod +x docker-compose.yml
 ```
 
 # 🔹 7️⃣ Setup & Run Playit.gg in tmux  
