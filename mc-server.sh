@@ -1,305 +1,206 @@
 #!/bin/bash
- 
-# Define server directory and container name
-SERVER_DIR="$HOME/minecraft-servers/server1"        #🚨CHANGE ME ~~~~~~~~~~~~~🚨
-CONTAINER_NAME="minecraft_server1"                  #🚨CHANGE ME ~~~~~~~~~~~~~🚨
- 
-# Ensure the script is run inside server(#) directory
+
+# Define your server name once — change this for different servers!
+#🚨CHANGE ME ~~~~~~~~~~~~~🚨
+SERVER_NAME="server1" 
+#🚨CHANGE ME ~~~~~~~~~~~~~🚨
+
+# Derived variables (don't touch)
+SERVER_DIR="$HOME/minecraft-servers/$SERVER_NAME"
+CONTAINER_NAME="minecraft_$SERVER_NAME"
+BACKUP_DIR="$HOME/minecraft-servers/backups/$SERVER_NAME"
+
+# Ensure you're running from the correct directory
 if [[ "$(pwd)" != "$SERVER_DIR" ]]; then
     echo "⚠️  You must be in $SERVER_DIR to run this command!"
     exit 1
 fi
- 
-# Define the list of commands we want symlinks for
+
+# Define the list of command symlinks
 COMMANDS=("start" "stop" "stop5" "cancel" "restart" "status" "console" "logs" \
-          "properties" "whitelist" "ops" "stats" "statsl" "backup" "commands")
- 
-# Check if symlinks exist; if not, create them
+          "properties" "whitelist" "ops" "stats" "statsl" "backup" "backupn" "restore" "commands")
+
+# Create missing symlinks
 for CMD in "${COMMANDS[@]}"; do
-    if [[ ! -L "$SERVER_DIR/$CMD" ]]; then
-        ln -s "$SERVER_DIR/mc-server.sh" "$SERVER_DIR/$CMD"
-        echo "🔗 Symlink for '$CMD' created."
-    fi
+    [[ ! -L "$SERVER_DIR/$CMD" ]] && ln -s "$SERVER_DIR/mc-server.sh" "$SERVER_DIR/$CMD" && echo "🔗 Symlink for '$CMD' created."
 done
- 
-# Determine which command was run (basename of the symlink)
+
+# Determine which command was used
 RUN_CMD="$(basename "$0")"
- 
+
 case "$RUN_CMD" in
- 
-    # ------------------------------
-    #  START THE SERVER
-    # ------------------------------
+
     start)
-        echo "🚀 Starting Minecraft server (server)..."
+        echo "🚀 Starting Minecraft server ($SERVER_NAME)..."
         docker-compose up -d
         ;;
- 
-    # ------------------------------
-    #  STOP THE SERVER IMMEDIATELY
-    # ------------------------------
+
     stop)
         echo "🛑 Stopping Minecraft server safely..."
         docker exec -it "$CONTAINER_NAME" rcon-cli stop
         sleep 5
         docker-compose down
         ;;
- 
-    # ------------------------------
-    #  5-MINUTE COUNTDOWN SHUTDOWN
-    # ------------------------------
+
     stop5)
         echo "🕗 Countdown to shutdown (5 minutes)..."
- 
-        # Remove any stale cancel file from previous attempts
         rm -f "$SERVER_DIR/stop5.cancel" 2>/dev/null
- 
-        # All warnings in red (use §c for bright red)
-        # 5 min
-        docker exec -it "$CONTAINER_NAME" rcon-cli say "§cSERVER SHUTDOWN in 5 MINUTES!"
-        sleep 60
-        [[ -f "$SERVER_DIR/stop5.cancel" ]] && \
-          echo "Shutdown cancelled!" && \
-          docker exec -it "$CONTAINER_NAME" rcon-cli say "§aSERVER SHUTDOWN CANCELLED!" && \
-          rm -f "$SERVER_DIR/stop5.cancel" && exit 0
- 
-        # 4 min
-        docker exec -it "$CONTAINER_NAME" rcon-cli say "§cSERVER SHUTDOWN in 4 MINUTES!"
-        sleep 60
-        [[ -f "$SERVER_DIR/stop5.cancel" ]] && \
-          echo "Shutdown cancelled!" && \
-          docker exec -it "$CONTAINER_NAME" rcon-cli say "§aSERVER SHUTDOWN CANCELLED!" && \
-          rm -f "$SERVER_DIR/stop5.cancel" && exit 0
- 
-        # 3 min
-        docker exec -it "$CONTAINER_NAME" rcon-cli say "§cSERVER SHUTDOWN in 3 MINUTES!"
-        sleep 60
-        [[ -f "$SERVER_DIR/stop5.cancel" ]] && \
-          echo "Shutdown cancelled!" && \
-          docker exec -it "$CONTAINER_NAME" rcon-cli say "§aSERVER SHUTDOWN CANCELLED!" && \
-          rm -f "$SERVER_DIR/stop5.cancel" && exit 0
- 
-        # 2 min
-        docker exec -it "$CONTAINER_NAME" rcon-cli say "§cSERVER SHUTDOWN in 2 MINUTES!"
-        sleep 60
-        [[ -f "$SERVER_DIR/stop5.cancel" ]] && \
-          echo "Shutdown cancelled!" && \
-          docker exec -it "$CONTAINER_NAME" rcon-cli say "§aSERVER SHUTDOWN CANCELLED!" && \
-          rm -f "$SERVER_DIR/stop5.cancel" && exit 0
- 
-        # 1 min
-        docker exec -it "$CONTAINER_NAME" rcon-cli say "§cSERVER SHUTDOWN in 1 MINUTE!"
-        sleep 30
-        [[ -f "$SERVER_DIR/stop5.cancel" ]] && \
-          echo "Shutdown cancelled!" && \
-          docker exec -it "$CONTAINER_NAME" rcon-cli say "§aSERVER SHUTDOWN CANCELLED!" && \
-          rm -f "$SERVER_DIR/stop5.cancel" && exit 0
- 
-        # 30 sec
-        docker exec -it "$CONTAINER_NAME" rcon-cli say "§cSERVER SHUTDOWN in 30 SECONDS!"
-        sleep 15
-        [[ -f "$SERVER_DIR/stop5.cancel" ]] && \
-          echo "Shutdown cancelled!" && \
-          docker exec -it "$CONTAINER_NAME" rcon-cli say "§aSERVER SHUTDOWN CANCELLED!" && \
-          rm -f "$SERVER_DIR/stop5.cancel" && exit 0
- 
-        # 15 sec
-        docker exec -it "$CONTAINER_NAME" rcon-cli say "§cSERVER SHUTDOWN in 15 SECONDS!"
-        sleep 5
-        [[ -f "$SERVER_DIR/stop5.cancel" ]] && \
-          echo "Shutdown cancelled!" && \
-          docker exec -it "$CONTAINER_NAME" rcon-cli say "§aSERVER SHUTDOWN CANCELLED!" && \
-          rm -f "$SERVER_DIR/stop5.cancel" && exit 0
- 
-        # 10 sec -> countdown to 1
-        for i in {10..1}; do
-          if [[ -f "$SERVER_DIR/stop5.cancel" ]]; then
-            echo "Shutdown cancelled!"
-            docker exec -it "$CONTAINER_NAME" rcon-cli say "§aSERVER SHUTDOWN CANCELLED!"
-            rm -f "$SERVER_DIR/stop5.cancel"
-            exit 0
-          fi
-          docker exec -it "$CONTAINER_NAME" rcon-cli say "§cSERVER SHUTDOWN in $i SECONDS!"
-          sleep 1
+
+        for t in 5 4 3 2 1; do
+            docker exec -it "$CONTAINER_NAME" rcon-cli say "§cSERVER SHUTDOWN in $t MINUTES!"
+            sleep 60
+            [[ -f "$SERVER_DIR/stop5.cancel" ]] && echo "Shutdown cancelled!" && docker exec -it "$CONTAINER_NAME" rcon-cli say "§aSERVER SHUTDOWN CANCELLED!" && rm -f "$SERVER_DIR/stop5.cancel" && exit 0
         done
- 
+
+        for i in 30 15 10 9 8 7 6 5 4 3 2 1; do
+            docker exec -it "$CONTAINER_NAME" rcon-cli say "§cSERVER SHUTDOWN in $i SECONDS!"
+            sleep 1
+        done
+
         echo "🛑 Now stopping server..."
         docker exec -it "$CONTAINER_NAME" rcon-cli stop
         sleep 5
         docker-compose down
         ;;
- 
-    # ------------------------------
-    #  CANCEL SHUTDOWN COUNTDOWN
-    # ------------------------------
+
     cancel)
         echo "❌ Cancelling any ongoing 'stop5' countdown..."
         touch "$SERVER_DIR/stop5.cancel"
         docker exec -it "$CONTAINER_NAME" rcon-cli say "§aSERVER SHUTDOWN CANCELLED!"
         ;;
- 
-    # ------------------------------
-    #  RESTART THE SERVER
-    # ------------------------------
+
     restart)
         echo "🔄 Restarting Minecraft server..."
         "$SERVER_DIR/stop"
         sleep 3
         "$SERVER_DIR/start"
         ;;
- 
-    # ------------------------------
-    #  CHECK IF SERVER IS RUNNING
-    # ------------------------------
+
     status)
         echo "📊 Checking server status..."
         docker ps --filter "name=$CONTAINER_NAME"
         ;;
- 
-    # ------------------------------
-    #  ATTACH TO THE SERVER CONSOLE
-    # ------------------------------
+
     console)
         echo "🎮 Attaching to Minecraft console (Press CTRL+P, CTRL+Q to detach)"
         docker attach "$CONTAINER_NAME"
         ;;
- 
-    # ------------------------------
-    #  TAIL THE SERVER LOGS
-    # ------------------------------
+
     logs)
         echo "📜 Showing live server logs..."
         docker-compose logs -f
         ;;
- 
-    # ------------------------------
-    #  EDIT PROPERTIES, WHITELIST, OPS
-    # ------------------------------
+
     properties)
         echo "📝 Editing data/server.properties..."
         nano "$SERVER_DIR/data/server.properties"
         ;;
- 
+
     whitelist)
         echo "✅ Editing whitelist.json..."
         nano "$SERVER_DIR/whitelist.json"
         ;;
- 
+
     ops)
         echo "🛠 Editing ops.json..."
         nano "$SERVER_DIR/ops.json"
         ;;
- 
-    # ------------------------------
-    #  SHOW STATS: Player list, version, resource usage
-    # ------------------------------
+
     stats)
         echo "🔎 Player List:"
         docker exec -it "$CONTAINER_NAME" rcon-cli list 2>/dev/null
- 
         echo "🔎 Server Version:"
         grep 'VERSION:' docker-compose.yml | cut -d'"' -f2
-
- 
-        echo "🔎 Resource Usage (docker stats --no-stream):"
+        echo "🔎 Resource Usage:"
         docker stats --no-stream "$CONTAINER_NAME"
         ;;
- 
-    # ------------------------------
-    #  STATS FOR 1 MINUTE (LIVE)
-    # ------------------------------
+
     statsl)
         echo "🖥  Live stats for 1 minute (every 10s)..."
- 
         for i in {1..6}; do
-          echo "----- Stats iteration $i of 6 -----"
-          echo "🔎 Player List:"
-          docker exec -it "$CONTAINER_NAME" rcon-cli list 2>/dev/null
- 
-          echo "🔎 Server Version:"
-          grep 'VERSION:' docker-compose.yml | cut -d'"' -f2
-
- 
-          echo "🔎 Resource Usage (docker stats --no-stream):"
-          docker stats --no-stream "$CONTAINER_NAME"
- 
-          # Sleep 10 seconds before next iteration
-          [[ "$i" -lt 6 ]] && sleep 10
+            echo "----- Stats iteration $i of 6 -----"
+            docker exec -it "$CONTAINER_NAME" rcon-cli list 2>/dev/null
+            grep 'VERSION:' docker-compose.yml | cut -d'"' -f2
+            docker stats --no-stream "$CONTAINER_NAME"
+            [[ "$i" -lt 6 ]] && sleep 10
         done
- 
         echo "✅ Done showing live stats."
         ;;
- 
-    # ------------------------------
-    #  BACKUP THE SERVER
-    # ------------------------------
+
     backup)
         echo "💾 Backing up the server world data..."
-        echo "⚠️  Temporarily disabling world saves..."
- 
-        # 1. Turn off saves (to avoid corruption)
         docker exec -it "$CONTAINER_NAME" rcon-cli save-off
         docker exec -it "$CONTAINER_NAME" rcon-cli save-all
         sleep 2
- 
-        # 2. Define the backup directory
-        BACKUP_DIR="$HOME/minecraft-servers/backups/server1" #🚨CHANGE ME 🚨
- 
-        # 3. Create the directory if it doesn’t exist
         mkdir -p "$BACKUP_DIR"
- 
-            # 4. Calculate the size of the data folder before zipping
-        SIZE=$(du -sh "$SERVER_DIR/data" | awk '{print $1}')  # Get human-readable size (e.g., 2.3G)
- 
-        # 5. Create the backup filename with timestamp and size
+        LAST_NUM=$(find "$BACKUP_DIR" -maxdepth 1 -type f -name '*.tar.gz' -printf "%f\n" | grep '^[0-9]\+-' | sort -n | tail -n 1 | cut -d- -f1)
+        NEXT_NUM=$((LAST_NUM + 1))
         TIMESTAMP="$(date +%F-%H%M)"
-        BACKUP_FILE="$BACKUP_DIR/backup-${TIMESTAMP}-${SIZE}.tar.gz"
- 
-        echo "📦 Creating backup: $BACKUP_FILE"
- 
-        # 6. CHOOSE BETWEEN TAR.GZ OR A FOLDER BACKUP
-        # -------------------------------------------
- 
-        # Option 1: Create a compressed tar.gz file (default)
-        tar -czf "$BACKUP_FILE" -C "$SERVER_DIR" data
- 
-        # Option 2: Copy the entire data folder instead (Uncomment the line below)
-        # cp -r "$SERVER_DIR/data" "$BACKUP_DIR/data-$TIMESTAMP"
- 
-        # -------------------------------------------
- 
-        # 7. Turn on saves again
+        SIZE=$(du -sh "$SERVER_DIR/data" | awk '{print $1}')
+        BACKUP_FILE="${NEXT_NUM}-AutoBackup-backup-${TIMESTAMP}-${SIZE}.tar.gz"
+        tar -czf "$BACKUP_DIR/$BACKUP_FILE" -C "$SERVER_DIR" data
         docker exec -it "$CONTAINER_NAME" rcon-cli save-on
- 
-        echo "✅ Backup completed and saved to $BACKUP_FILE (or folder if using cp -r)"
+        echo "✅ Auto-backup complete: $BACKUP_FILE"
         ;;
- 
-        # ------------------------------
- 
-    commands)
-        echo "🔖 Available commands:"
-        echo "  start      - Start the Minecraft server"
-        echo "  stop       - Stop the server immediately"
-        echo "  stop5      - 5-minute countdown then shutdown"
-        echo "  cancel     - Cancel the 'stop5' countdown"
-        echo "  restart    - Restart the server"
-        echo "  status     - Check if the server is running"
-        echo "  console    - Attach to the live console"
-        echo "  logs       - View server logs in real-time"
-        echo "  properties - Edit data/server.properties"
-        echo "  whitelist  - Edit whitelist.json"
-        echo "  ops        - Edit ops.json"
-        echo "  stats      - Show player list, version, resource usage"
-        echo "  statsl     - Live stats for 1 minute (updates every 10s)"
-        echo "  backup     - Create a .tar.gz backup of the data folder"
-        echo "  commands   - Print this command list"
+
+    backupn)
+        echo "💾 Backing up the server world data (named)..."
+        docker exec -it "$CONTAINER_NAME" rcon-cli save-off
+        docker exec -it "$CONTAINER_NAME" rcon-cli save-all
+        sleep 2
+        mkdir -p "$BACKUP_DIR"
+        read -rp "📝 Enter a name for this backup (no spaces): " BACKUP_NAME
+        LAST_NUM=$(find "$BACKUP_DIR" -maxdepth 1 -type f -name '*.tar.gz' -printf "%f\n" | grep '^[0-9]\+-' | sort -n | tail -n 1 | cut -d- -f1)
+        NEXT_NUM=$((LAST_NUM + 1))
+        TIMESTAMP="$(date +%F-%H%M)"
+        SIZE=$(du -sh "$SERVER_DIR/data" | awk '{print $1}')
+        BACKUP_FILE="${NEXT_NUM}-${BACKUP_NAME}-backup-${TIMESTAMP}-${SIZE}.tar.gz"
+        tar -czf "$BACKUP_DIR/$BACKUP_FILE" -C "$SERVER_DIR" data
+        docker exec -it "$CONTAINER_NAME" rcon-cli save-on
+        echo "✅ Named backup complete: $BACKUP_FILE"
         ;;
- 
-    # ------------------------------
-    #  DEFAULT CATCH-ALL
-    # ------------------------------
+
+    restore)
+        mkdir -p "$BACKUP_DIR"
+        echo "💾 Available backups:"
+        find "$BACKUP_DIR" -maxdepth 1 -type f -name '*.tar.gz' -printf "%f\n" | sort -n
+        read -rp "🔢 Enter the number of the backup to restore: " BACKUP_NUM
+        MATCH_PATH=$(find "$BACKUP_DIR" -maxdepth 1 -type f -name "${BACKUP_NUM}-*.tar.gz" | head -n 1)
+        [[ -z "$MATCH_PATH" ]] && echo "❌ Backup #$BACKUP_NUM not found." && exit 1
+        read -rp "⚠️  Type YES to confirm restore from '$(basename "$MATCH_PATH")': " CONFIRM
+        [[ "$CONFIRM" != "YES" ]] && echo "❌ Restore cancelled." && exit 1
+        echo "🛑 Stopping server..."
+        docker stop "$CONTAINER_NAME"
+        rm -rf "$SERVER_DIR/data"
+        tar -xzf "$MATCH_PATH" -C "$SERVER_DIR"
+        docker start "$CONTAINER_NAME"
+        echo "✅ Restore complete!"
+        ;;
+
+	commands)
+		echo "🔖 Available commands:"
+		echo "  start      - Start the Minecraft server"
+		echo "  stop       - Stop the server immediately"
+		echo "  stop5      - 5-minute countdown then shutdown"
+		echo "  cancel     - Cancel the 'stop5' countdown"
+		echo "  restart    - Restart the server"
+		echo "  status     - Check if the server is running"
+		echo "  console    - Attach to the live console"
+		echo "  logs       - View server logs in real-time"
+		echo "  properties - Edit data/server.properties"
+		echo "  whitelist  - Edit whitelist.json"
+		echo "  ops        - Edit ops.json"
+		echo "  stats      - Show player list, version, resource usage"
+		echo "  statsl     - Live stats for 1 minute (updates every 10s)"
+		echo "  backup     - Create a numbered auto-named .tar.gz backup"
+		echo "  backupn    - Create a numbered .tar.gz backup with custom name"
+		echo "  restore    - Restore a backup by number"
+		echo "  commands   - Print this command list"
+		;;
+
+
     *)
-        echo "⚙️  Usage: start | stop | stop5 | cancel | restart | status | console | logs | properties | whitelist | ops | stats | statsl | backup | commands"
+        echo "⚙️  Usage: ${COMMANDS[*]}"
         exit 1
         ;;
 esac
