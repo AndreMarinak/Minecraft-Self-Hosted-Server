@@ -1,5 +1,4 @@
-//IN FILE
- 
+
 services:
   mc-server1: #🚨CHANGE ME🚨
     image: itzg/minecraft-server
