@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#chmod +x mc-server.sh  
+#chmod +x docker-compose.yml
+
+
 # Define your server name once — change this for different servers!
 #🚨CHANGE ME ~~~~~~~~~~~~~🚨
 SERVER_NAME="server1" 
@@ -204,3 +208,4 @@ case "$RUN_CMD" in
         exit 1
         ;;
 esac
+
